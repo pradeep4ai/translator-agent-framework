@@ -74,7 +74,7 @@ jobs:
         cd frontend
         npm run lint 2>/dev/null || echo "Linting completed"
 
-  deploy:
+  deploy-vercel:
     runs-on: ubuntu-latest
     needs: build
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
@@ -82,9 +82,16 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Deploy notification
+    - name: Deploy frontend to Vercel
       run: |
-        echo "Deployment step - Ready for deployment"
-        echo "Backend will run on FastAPI/Uvicorn"
-        echo "Frontend will be served by Vite or static hosting"
-        echo "Configure your deployment target (Heroku, AWS, Azure, etc.) here"
+        npm install -g vercel
+        cd frontend
+        vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }}
+      env:
+        VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+        VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+    - name: Post deployment status
+      run: |
+        echo "✅ Deployment complete!"
+        echo "Frontend: https://translator-agent-framework.vercel.app"
