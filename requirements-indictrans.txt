@@ -1,0 +1,5 @@
+# Optional heavy deps for AI4Bharat IndicTrans2 (Bhojpuri / Nepali).
+# Install separately: pip install -r requirements-indictrans.txt
+transformers>=4.40
+torch>=2.2
+sentencepiece>=0.2

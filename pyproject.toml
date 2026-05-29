@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "polyglot"
+version = "0.1.0"
+description = "Polyglot - a multilingual translator built on a custom-from-scratch agent framework (Hindi/Telugu/Marathi/Gujarati/Bhojpuri/Kannada/Nepali <-> EN/DE/FR)"
+requires-python = ">=3.11"
+readme = "README.md"
+
+[tool.setuptools.packages.find]
+include = ["framework*", "agents*", "backend*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"

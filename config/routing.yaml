@@ -1,0 +1,33 @@
+# Maps (source_lang, target_lang) -> LLM provider/model.
+# Wildcards: "*" matches any side. First matching rule wins.
+
+languages:
+  indian:
+    - { code: hi, name: Hindi,     script: Devanagari }
+    - { code: te, name: Telugu,    script: Telugu }
+    - { code: mr, name: Marathi,   script: Devanagari }
+    - { code: gu, name: Gujarati,  script: Gujarati }
+    - { code: bho, name: Bhojpuri, script: Devanagari }
+    - { code: kn, name: Kannada,   script: Kannada }
+    - { code: ne, name: Nepali,    script: Devanagari }
+  western:
+    - { code: en, name: English,   script: Latin }
+    - { code: de, name: German,    script: Latin }
+    - { code: fr, name: French,    script: Latin }
+
+# Rules evaluated top-to-bottom. First match wins.
+# strong_model = used on retry if reviewer score is low.
+rules:
+  # IndicTrans2 rules disabled — requires ENABLE_INDICTRANS2=1 + ~2GB model download.
+  # Re-enable by uncommenting when IndicTrans2 is installed.
+  # - { source: bho, target: "*", provider: indictrans2, model: ai4bharat/indictrans2-indic-en-1B, strong_provider: claude, strong_model: claude-sonnet-4-6 }
+  # - { source: "*", target: bho, provider: indictrans2, model: ai4bharat/indictrans2-en-indic-1B, strong_provider: claude, strong_model: claude-sonnet-4-6 }
+  # - { source: ne,  target: "*", provider: indictrans2, model: ai4bharat/indictrans2-indic-en-1B, strong_provider: openai, strong_model: gpt-4o }
+  # - { source: "*", target: ne,  provider: indictrans2, model: ai4bharat/indictrans2-en-indic-1B, strong_provider: openai, strong_model: gpt-4o }
+
+  # Default: Claude Sonnet for everything else, with GPT-4o as strong fallback.
+  - { source: "*", target: "*", provider: claude, model: claude-sonnet-4-6, strong_provider: openai, strong_model: gpt-4o }
+
+retry:
+  min_acceptable_quality: 3
+  max_attempts: 2
